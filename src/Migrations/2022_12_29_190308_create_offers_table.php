@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('offer_id');
-            $table->unsignedInteger('offerable_id');
-            $table->unsignedInteger('offerable_type');
-            $table->unsignedInteger('discount_amount');
+            $table->string('code');
+            $table->enum('type', ['FIXED' , 'PERCENTAGE']);
+            $table->unsignedInteger('amount');
             $table->timestamps();
         });
     }
