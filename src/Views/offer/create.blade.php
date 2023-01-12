@@ -7,32 +7,38 @@
     <link href="/vendor/discount/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-<h1>Create an Offer</h1>
-<form>
+<div class="container">
+    <h1 class="mt-3 mb-3">Create an offer</h1>
 
-</form>
+    <form action="{{route('discount.offer.store')}}" method="post">
+        @csrf
+        <div class="form-group mb-3">
+            <label class="mb-1">Code</label>
+            <input type="text" name="code" class="form-control">
+            <div id="" class="form-text">Offer code</div>
+        </div>
 
+        <div class="form-group mb-3">
+            <label class="mb-1">Type</label>
+            <select class="form-control" name="type">
+                <option value="FIXED">fixed</option>
+                <option value="PERCENTAGE">percentage</option>
+            </select>
+            <div id="" class="form-text">type of offer</div>
+        </div>
 
-<form>
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <div class="form-group">
-        <label>Code</label>
-        <input type="text" name="code" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group mb-3">
+            <label class="mb-1">Amount</label>
+            <input type="text" name="amount" class="form-control">
+            <div id="" class="form-text">amount of offer code</div>
+        </div>
+
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+</div>
 <script src="/vendor/discount/js/bootstrap.bundle.js"></script>
 </body>
 </html>
