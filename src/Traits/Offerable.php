@@ -19,16 +19,6 @@ abstract class Offerable extends Model
     abstract function getDiscountableFieldAttribute():string ;
 
     /**
-     * Get all available discount for discountable
-     *
-     * @return MorphToMany
-     */
-    public function discounts()
-    {
-        return $this->morphToMany(Discount::class, 'discountable');
-    }
-
-    /**
      * Get all offers belongs to offerable
      *
      * @return MorphToMany
@@ -39,6 +29,17 @@ abstract class Offerable extends Model
     }
 
     /**
+     * Get all offers belongs to offerable
+     *
+     * @return MorphToMany
+     */
+    public function discounts()
+    {
+        return $this->morphToMany(Offer::class , 'offerable' , 'discounts' , 'offerable_id');
+    }
+
+
+    /**
      * Add an offer to offerable
      *
      * @param Offer $offer
@@ -47,10 +48,42 @@ abstract class Offerable extends Model
     public function addOffer(Offer $offer)
     {
         try {
-            $this->offers()->attach($offer->id);
+            if (!$this->offerAvailability($offer->code)) {
+                $this->offers()->attach($offer->id);
+            }
             return true;
         }catch (\Throwable $throwable){
             return false;
         }
+    }
+
+    public function calculateDiscount()
+    {
+
+    }
+
+    public function applyDiscount($code)
+    {
+        try{
+            throw_if(!$this->offerAvailability($code) , new \Exception("This code can not apply to this object"));
+
+            $offer = $this->offers()->where('code' , $code)->first();
+            //TODO: amount comes here
+            $this->discounts()->attach($offer->id , ['discount_amount' => null]);
+
+            return [
+                'success' => true,
+            ];
+        }catch (\Throwable $throwable){
+            return [
+                'success' => false,
+                'message' => $throwable->getMessage()
+            ];
+        }
+    }
+
+    public function offerAvailability($code)
+    {
+        return $this->offers()->where('code' , $code)->exists();
     }
 }

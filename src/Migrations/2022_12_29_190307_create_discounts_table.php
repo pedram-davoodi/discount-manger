@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('offer_id');
             $table->unsignedInteger('offerable_id');
-            $table->unsignedInteger('offerable_type');
+            $table->string('offerable_type');
             $table->unsignedInteger('discount_amount');
             $table->timestamps();
         });
