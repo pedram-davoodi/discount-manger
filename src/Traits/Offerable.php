@@ -16,7 +16,7 @@ abstract class Offerable extends Model
      *
      * @return string
      */
-    abstract function getDiscountableFieldAttribute():string ;
+    abstract function getDiscountableAmountFieldAttribute():string ;
 
     /**
      * Get all offers belongs to offerable
@@ -62,14 +62,22 @@ abstract class Offerable extends Model
 
     }
 
+    /**
+     * Add discount to an offerable
+     *
+     * @param $code
+     * @return array|bool[]
+     */
     public function applyDiscount($code)
     {
         try{
             throw_if(!$this->offerAvailability($code) , new \Exception("This code can not apply to this object"));
 
+            $amount = $this->{$this->discountable_amount_field};
+
             $offer = $this->offers()->where('code' , $code)->first();
-            //TODO: amount comes here
-            $this->discounts()->attach($offer->id , ['discount_amount' => null]);
+
+            $this->discounts()->attach($offer->id , ['discount_amount' => $offer->calculateDiscountOffer($amount)]);
 
             return [
                 'success' => true,
